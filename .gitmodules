@@ -1,0 +1,3 @@
+[submodule "src/human_detector"]
+	path = src/human_detector
+	url = https://github.com/MauricioPimenta/human_detector.git
