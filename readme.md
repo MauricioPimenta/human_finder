@@ -1,5 +1,6 @@
 
-To run the static transform to correct the camera frame id:
+### To run the static transform to correct the camera frame id:
+
 ```.bash
 ros2 run tf2_ros static_transform_publisher \
   0 0 0 0 0 0 \
@@ -8,7 +9,7 @@ ros2 run tf2_ros static_transform_publisher \
 
 ```
 
-To run the human_detector in a terminal:
+### To run the human_detector in a terminal:
 
 ``` .bash
 ros2 run human_detector human_detector --ros-args --remap __ns:=/a200_0000 -r tf:=a200_0000/tf -r tf_static:=a200_0000/tf_static -p camera_frame_id:="camera_0_color_optical_frame"
