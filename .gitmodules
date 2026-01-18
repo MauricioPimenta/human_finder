@@ -1,6 +1,4 @@
-[submodule "src/human_detector"]
-	path = src/human_detector
-	url = https://github.com/MauricioPimenta/human_detector.git
 [submodule "src/m-explore-ros2"]
 	path = src/m-explore-ros2
 	url = https://github.com/MauricioPimenta/m-explore-ros2.git
+	branch = feature/slam_toolbox_compat
