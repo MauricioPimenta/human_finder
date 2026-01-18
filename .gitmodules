@@ -1,4 +1,0 @@
-[submodule "src/m-explore-ros2"]
-	path = src/m-explore-ros2
-	url = https://github.com/MauricioPimenta/m-explore-ros2.git
-	branch = feature/slam_toolbox_compat
