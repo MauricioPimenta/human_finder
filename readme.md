@@ -13,6 +13,21 @@ ros2 run tf2_ros static_transform_publisher \
 ros2 run human_detector human_detector --ros-args --remap __ns:=/a200_0000 -r tf:=a200_0000/tf -r tf_static:=a200_0000/tf_static -p camera_frame_id:="camera_0_color_optical_frame"
 ```
 
+### Building human_detector
+
+To build human_detector we need to create a virtual environment in the ubuntu 24.
+
+To build using colcon after using rosdep inside the virtual environment, use the following:
+
+```.bash
+source ~/mediapipe_env/bin/activate
+cd ~/human_finder_ws
+source install/setup.bash   # se já existir - acho que não é necessário
+colcon build --packages-select human_detector --symlink-install
+```
+
+
+
 #### To-do List:
 
 * [ ] Change Parameters of robot costmap (**Nav2** parameters)
