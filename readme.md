@@ -13,6 +13,12 @@ ros2 run tf2_ros static_transform_publisher \
 ros2 run human_detector human_detector --ros-args --remap __ns:=/a200_0000 -r tf:=a200_0000/tf -r tf_static:=a200_0000/tf_static -p camera_frame_id:="camera_0_color_optical_frame"
 ```
 
+
+### Commands to run all nodes in their terminal
+
+#### Clearpath Simulation
+
+
 #### To-do List:
 
 * [ ] Change Parameters of robot costmap (**Nav2** parameters)
