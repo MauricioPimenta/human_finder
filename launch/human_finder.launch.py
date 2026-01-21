@@ -1,40 +1,93 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, EmitEvent
-from launch.events.matchers import matches_action
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import LifecycleNode
-from launch_ros.events.lifecycle import ChangeState
-from lifecycle_msgs.msg import Transition
 from ament_index_python.packages import get_package_share_directory
 import os
 
-
 def generate_launch_description():
-    use_sim_arg = DeclareLaunchArgument("use_sim", default_value="False", description="Use sim time.")
-    
-    
-    human_detector = LifecycleNode(
-        package="human_detector",
-        executable="human_detector",
-        name="human_detector",
-        output="screen",
-        namespace="",
-        parameters=[
-            {"use_sim_time": LaunchConfiguration("use_sim")},
-        ],
-    )
 
-    move_human_detector_to_configure_state_event = EmitEvent(
-        event=ChangeState(
-            lifecycle_node_matcher=matches_action(human_detector),
-            transition_id=Transition.TRANSITION_CONFIGURE,
-        )
-    )
+    namespace = LaunchConfiguration('namespace')
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    # Get the clearpath setup path using the HOME environment variable
+    clearpath_setup_path = os.path.join(os.environ['HOME'], 'clearpath')
 
-    return LaunchDescription(
-        [
-            use_sim_arg,
-            human_detector,
-            move_human_detector_to_configure_state_event,
-        ]
-    )
+    return LaunchDescription([
+
+        DeclareLaunchArgument(
+            'namespace',
+            default_value='a200_0000',
+            description='Robot Namespace'
+        ),
+
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value=use_sim_time,
+            description='Use simulation time if true'
+        ),
+        
+        DeclareLaunchArgument(
+			'clearpath_setup_path',
+			default_value=clearpath_setup_path,
+			description='Path to Clearpath setup files'
+		),
+
+		# Launch the Clearpath simulation environment
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory('clearpath_gz'),
+                    'launch',
+                    'simulation.launch.py'
+                )
+            ),
+            launch_arguments={
+                'rviz': 'true',
+                'world': 'office',
+                'setup_path': clearpath_setup_path,
+                'use_sim_time': use_sim_time,
+                'x': '0.0',
+				'y': '0.0',
+				'z': '0.0',
+				'yaw': '0.0',
+				'auto_start': 'true',
+				'generate': 'true'
+            }.items()
+        ),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory('slam_toolbox'),
+                    'launch',
+                    'online_async_launch.py'
+                )
+            ),
+            launch_arguments={
+                'namespace': namespace,
+                'use_sim_time': use_sim_time
+            }.items()
+        ),
+
+        Node(
+            package='explore_lite',
+            executable='explore',
+            namespace=namespace,
+            parameters=[{'use_sim_time': use_sim_time}]
+        ),
+
+        Node(
+            package='human_detector',
+            executable='human_detector_node',
+            namespace=namespace,
+            parameters=[{'use_sim_time': use_sim_time}]
+        ),
+
+        Node(
+            package='human_finder',
+            executable='human_finder_node',
+            namespace=namespace,
+            parameters=[{'use_sim_time': use_sim_time}]
+        ),
+    ])
