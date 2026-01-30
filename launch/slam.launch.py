@@ -52,11 +52,11 @@ from nav2_common.launch import RewrittenYaml
 
 
 ARGUMENTS = [
-    DeclareLaunchArgument('use_sim_time', default_value='false',
+    DeclareLaunchArgument('use_sim_time', default_value='true',
                           choices=['true', 'false'],
                           description='Use sim time'),
     DeclareLaunchArgument('setup_path',
-                          default_value='/etc/clearpath/',
+                          default_value=os.path.join(os.getenv("HOME") , 'clearpath/'),
                           description='Clearpath setup path'),
     DeclareLaunchArgument('autostart', default_value='true',
                           choices=['true', 'false'],
@@ -77,6 +77,8 @@ def launch_setup(context, *args, **kwargs):
     # Packages
     pkg_clearpath_nav2_demos = get_package_share_directory('clearpath_nav2_demos')
     pkg_slam_toolbox = get_package_share_directory('slam_toolbox')
+
+    pkg_human_finder = get_package_share_directory('human_finder')
 
     # Launch Configurations
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -99,9 +101,8 @@ def launch_setup(context, *args, **kwargs):
         eval_scan_topic = f'/{namespace}/sensors/lidar2d_0/scan'
 
     file_parameters = PathJoinSubstitution([
-        pkg_clearpath_nav2_demos,
+        pkg_human_finder,
         'config',
-        platform_model,
         'slam.yaml'])
 
     rewritten_parameters = RewrittenYaml(

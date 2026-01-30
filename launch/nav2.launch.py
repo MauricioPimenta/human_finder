@@ -63,7 +63,7 @@ ARGUMENTS = [
                           choices=['true', 'false'],
                           description='Use sim time'),
     DeclareLaunchArgument('setup_path',
-                          default_value='$HOME/clearpath/',
+                          default_value = os.path.join(os.getenv("HOME") , 'clearpath/'),
                           description='Clearpath setup path'),
     DeclareLaunchArgument('scan_topic',
                           default_value='',
