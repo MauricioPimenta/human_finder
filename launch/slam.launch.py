@@ -64,7 +64,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('use_lifecycle_manager', default_value='false',
                           choices=['true', 'false'],
                           description='Enable bond connection during node activation'),
-    DeclareLaunchArgument('sync', default_value='true',
+    DeclareLaunchArgument('sync', default_value='false',
                           choices=['true', 'false'],
                           description='Use synchronous SLAM'),
     DeclareLaunchArgument('scan_topic',
