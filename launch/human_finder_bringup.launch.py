@@ -36,8 +36,38 @@ def generate_launch_description():
 
 		DeclareLaunchArgument(
 			'use_sync_slam',
-			default_value='true',
+			default_value='false',
 			description='Whether to use synchronous SLAM'
+		),
+
+		DeclareLaunchArgument(
+			'spawn_human',
+			default_value='true',
+			description='Spawn randomized human model in Gazebo'
+		),
+
+		DeclareLaunchArgument(
+			'human_min_x',
+			default_value='-20.0',
+			description='Minimum x for random human pose'
+		),
+
+		DeclareLaunchArgument(
+			'human_max_x',
+			default_value='20.0',
+			description='Maximum x for random human pose'
+		),
+
+		DeclareLaunchArgument(
+			'human_min_y',
+			default_value='-20.0',
+			description='Minimum y for random human pose'
+		),
+
+		DeclareLaunchArgument(
+			'human_max_y',
+			default_value='20.0',
+			description='Maximum y for random human pose'
 		),
 
 		#
@@ -63,6 +93,28 @@ def generate_launch_description():
 				'generate': 'true'
 			}.items()
 		),
+
+		#
+		# Spawn randomized human model in Gazebo
+		#
+		IncludeLaunchDescription(
+			PythonLaunchDescriptionSource(
+				os.path.join(
+					get_package_share_directory('human_finder'),
+					'launch',
+					'spawn_human_gz.launch.py'
+				)
+			),
+			launch_arguments={
+				'spawn_human': LaunchConfiguration('spawn_human'),
+				'world': 'office',
+				'human_name': 'male_visitor_on_phone',
+				'human_min_x': LaunchConfiguration('human_min_x'),
+				'human_max_x': LaunchConfiguration('human_max_x'),
+				'human_min_y': LaunchConfiguration('human_min_y'),
+				'human_max_y': LaunchConfiguration('human_max_y'),
+			}.items()
+		),
   
 		#
 		# Launch Rviz from clearpath 
@@ -77,7 +129,12 @@ def generate_launch_description():
 			),
 			launch_arguments={
 				'use_sim_time': use_sim_time,
-				'namespace': namespace
+				'namespace': namespace,
+    			'config': os.path.join(
+					get_package_share_directory('human_finder'),
+					'config',
+					'nav2_exploration.rviz'
+				)
 			}.items()
 		),
 
@@ -87,7 +144,7 @@ def generate_launch_description():
 		IncludeLaunchDescription(
 			PythonLaunchDescriptionSource(
 				os.path.join(
-					get_package_share_directory('clearpath_nav2_demos'),
+					get_package_share_directory('human_finder'),
 					'launch',
 					'slam.launch.py'
 				)
@@ -104,7 +161,7 @@ def generate_launch_description():
 		IncludeLaunchDescription(
 			PythonLaunchDescriptionSource(
 				os.path.join(
-					get_package_share_directory('clearpath_nav2_demos'),
+					get_package_share_directory('human_finder'),
 					'launch',
 					'nav2.launch.py'
 				)
@@ -132,22 +189,22 @@ def generate_launch_description():
 			}.items()
 		),
 
-		#
-		# Launch human_detector
-		#
-		IncludeLaunchDescription(
-			PythonLaunchDescriptionSource(
-				os.path.join(
-					get_package_share_directory('human_detector'),
-					'launch',
-					'human_detector.launch.py'
-				)
-			),
-			launch_arguments={
-				'use_sim_time': use_sim_time,
-				'namespace': namespace
-			}.items()
-		),
+		# #
+		# # Launch human_detector
+		# #
+		# IncludeLaunchDescription(
+		# 	PythonLaunchDescriptionSource(
+		# 		os.path.join(
+		# 			get_package_share_directory('human_detector'),
+		# 			'launch',
+		# 			'human_detector.launch.py'
+		# 		)
+		# 	),
+		# 	launch_arguments={
+		# 		'use_sim_time': use_sim_time,
+		# 		'namespace': namespace
+		# 	}.items()
+		# ),
 
 		# Node(
 		# 	package='human_finder',
