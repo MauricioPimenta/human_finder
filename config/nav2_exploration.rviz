@@ -7,7 +7,9 @@ Panels:
         - /Global Options1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /LaserScan1
+        - /Global Planner1
+        - /Controller1
+        - /Controller1/Trajectories1
         - /MarkerArray1
       Splitter Ratio: 0.5833333134651184
     Tree Height: 343
@@ -368,296 +370,21 @@ Visualization Manager:
       Value: true
       Visual Enabled: true
     - Class: rviz_default_plugins/TF
-      Enabled: true
+      Enabled: false
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        a200_0000/robot/base_link/camera_0:
-          Value: true
-        a200_0000/robot/base_link/imu_0:
-          Value: true
-        a200_0000/robot/base_link/lidar2d_0:
-          Value: true
-        a200_0000/robot/base_link/lidar3d_0:
-          Value: true
-        base_footprint:
-          Value: true
-        base_link:
-          Value: true
-        bracket_0_link:
-          Value: true
-        bracket_0_mount:
-          Value: true
-        camera_0_bottom_screw_frame:
-          Value: true
-        camera_0_link:
-          Value: true
-        default_mount:
-          Value: true
-        fath_pivot_0_hinge_link:
-          Value: true
-        fath_pivot_0_link:
-          Value: true
-        fath_pivot_0_mount:
-          Value: true
-        front_bumper_base_link:
-          Value: true
-        front_bumper_link:
-          Value: true
-        front_bumper_mount:
-          Value: true
-        front_left_wheel_link:
-          Value: true
-        front_right_wheel_link:
-          Value: true
-        imu_0_base_link:
-          Value: true
-        imu_0_link:
-          Value: true
-        inertial_link:
-          Value: true
-        lidar2d_0_laser:
-          Value: true
-        lidar2d_0_link:
-          Value: true
-        lidar3d_0_laser:
-          Value: true
-        lidar3d_0_link:
-          Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
-        rear_bumper_base_link:
-          Value: true
-        rear_bumper_link:
-          Value: true
-        rear_bumper_mount:
-          Value: true
-        rear_left_wheel_link:
-          Value: true
-        rear_right_wheel_link:
-          Value: true
-        sensor_arch_link:
-          Value: true
-        sensor_arch_mount:
-          Value: true
-        top_chassis_link:
-          Value: true
-        top_plate_adjust_link:
-          Value: true
-        top_plate_link:
-          Value: true
-        top_plate_mount_a1:
-          Value: true
-        top_plate_mount_a2:
-          Value: true
-        top_plate_mount_a3:
-          Value: true
-        top_plate_mount_a4:
-          Value: true
-        top_plate_mount_a5:
-          Value: true
-        top_plate_mount_a6:
-          Value: true
-        top_plate_mount_a7:
-          Value: true
-        top_plate_mount_a8:
-          Value: true
-        top_plate_mount_b1:
-          Value: true
-        top_plate_mount_b2:
-          Value: true
-        top_plate_mount_b7:
-          Value: true
-        top_plate_mount_b8:
-          Value: true
-        top_plate_mount_c1:
-          Value: true
-        top_plate_mount_c2:
-          Value: true
-        top_plate_mount_c7:
-          Value: true
-        top_plate_mount_c8:
-          Value: true
-        top_plate_mount_d1:
-          Value: true
-        top_plate_mount_d2:
-          Value: true
-        top_plate_mount_d7:
-          Value: true
-        top_plate_mount_d8:
-          Value: true
-        top_plate_mount_e1:
-          Value: true
-        top_plate_mount_e2:
-          Value: true
-        top_plate_mount_e7:
-          Value: true
-        top_plate_mount_e8:
-          Value: true
-        top_plate_mount_f1:
-          Value: true
-        top_plate_mount_f2:
-          Value: true
-        top_plate_mount_f7:
-          Value: true
-        top_plate_mount_f8:
-          Value: true
-        top_plate_mount_g1:
-          Value: true
-        top_plate_mount_g2:
-          Value: true
-        top_plate_mount_g3:
-          Value: true
-        top_plate_mount_g4:
-          Value: true
-        top_plate_mount_g5:
-          Value: true
-        top_plate_mount_g6:
-          Value: true
-        top_plate_mount_g7:
-          Value: true
-        top_plate_mount_g8:
-          Value: true
-        user_bay_cover_link:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
-        map:
-          odom:
-            base_link:
-              base_footprint:
-                {}
-              default_mount:
-                sensor_arch_link:
-                  sensor_arch_mount:
-                    fath_pivot_0_link:
-                      fath_pivot_0_hinge_link:
-                        fath_pivot_0_mount:
-                          camera_0_bottom_screw_frame:
-                            camera_0_link:
-                              a200_0000/robot/base_link/camera_0:
-                                {}
-                    lidar3d_0_link:
-                      a200_0000/robot/base_link/lidar3d_0:
-                        {}
-                      lidar3d_0_laser:
-                        {}
-                top_plate_adjust_link:
-                  top_plate_link:
-                    top_plate_mount_a1:
-                      {}
-                    top_plate_mount_a2:
-                      {}
-                    top_plate_mount_a3:
-                      {}
-                    top_plate_mount_a4:
-                      {}
-                    top_plate_mount_a5:
-                      {}
-                    top_plate_mount_a6:
-                      {}
-                    top_plate_mount_a7:
-                      {}
-                    top_plate_mount_a8:
-                      {}
-                    top_plate_mount_b1:
-                      {}
-                    top_plate_mount_b2:
-                      {}
-                    top_plate_mount_b7:
-                      {}
-                    top_plate_mount_b8:
-                      {}
-                    top_plate_mount_c1:
-                      {}
-                    top_plate_mount_c2:
-                      {}
-                    top_plate_mount_c7:
-                      {}
-                    top_plate_mount_c8:
-                      {}
-                    top_plate_mount_d1:
-                      bracket_0_link:
-                        bracket_0_mount:
-                          lidar2d_0_link:
-                            a200_0000/robot/base_link/lidar2d_0:
-                              {}
-                            lidar2d_0_laser:
-                              {}
-                    top_plate_mount_d2:
-                      {}
-                    top_plate_mount_d7:
-                      {}
-                    top_plate_mount_d8:
-                      {}
-                    top_plate_mount_e1:
-                      {}
-                    top_plate_mount_e2:
-                      {}
-                    top_plate_mount_e7:
-                      {}
-                    top_plate_mount_e8:
-                      {}
-                    top_plate_mount_f1:
-                      {}
-                    top_plate_mount_f2:
-                      {}
-                    top_plate_mount_f7:
-                      {}
-                    top_plate_mount_f8:
-                      {}
-                    top_plate_mount_g1:
-                      {}
-                    top_plate_mount_g2:
-                      {}
-                    top_plate_mount_g3:
-                      {}
-                    top_plate_mount_g4:
-                      {}
-                    top_plate_mount_g5:
-                      {}
-                    top_plate_mount_g6:
-                      {}
-                    top_plate_mount_g7:
-                      {}
-                    top_plate_mount_g8:
-                      {}
-                    user_bay_cover_link:
-                      {}
-              front_bumper_mount:
-                front_bumper_base_link:
-                  front_bumper_link:
-                    {}
-              front_left_wheel_link:
-                {}
-              front_right_wheel_link:
-                {}
-              imu_0_base_link:
-                imu_0_link:
-                  a200_0000/robot/base_link/imu_0:
-                    {}
-              inertial_link:
-                {}
-              rear_bumper_mount:
-                rear_bumper_base_link:
-                  rear_bumper_link:
-                    {}
-              rear_left_wheel_link:
-                {}
-              rear_right_wheel_link:
-                {}
-              top_chassis_link:
-                {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -810,7 +537,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: plan
+            Value: /a200_0000/plan
           Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
@@ -912,10 +639,10 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: local_plan
+            Value: /a200_0000/local_plan
           Value: true
         - Class: rviz_default_plugins/MarkerArray
-          Enabled: false
+          Enabled: true
           Name: Trajectories
           Namespaces:
             {}
@@ -924,8 +651,8 @@ Visualization Manager:
             Durability Policy: Volatile
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: marker
-          Value: false
+            Value: /a200_0000/marker
+          Value: true
         - Alpha: 1
           Class: rviz_default_plugins/Polygon
           Color: 25; 255; 0
@@ -1034,11 +761,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 34.503963470458984
+      Scale: 44.62617874145508
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
-      X: -0.1596551388502121
-      Y: -0.1832677274942398
+      X: 6.230843544006348
+      Y: 1.6605253219604492
     Saved: ~
 Window Geometry:
   Displays:

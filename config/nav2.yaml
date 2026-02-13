@@ -135,13 +135,14 @@ local_costmap:
       width: 5
       height: 5
       resolution: 0.06
-      footprint: "[ [0.45, 035], [0.45, -0.35], [-0.45, -0.35], [-0.45, 0.35] ]"
+      footprint: "[ [0.35, 0.25], [0.35, -0.25], [-0.35 -0.25], [-0.35, 0.25] ]"
       always_send_full_costmap: true
       plugins: ["static_layer", "voxel_layer", "inflation_layer"]
+      # plugins: ["static_layer", "voxel_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 8.0    # antes 4.0
-        inflation_radius: 0.55       # antes 0.8
+        cost_scaling_factor: 40.0
+        inflation_radius: 0.60
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: true
@@ -158,9 +159,9 @@ local_costmap:
           clearing: true
           marking: true
           data_type: "LaserScan"
-          raytrace_max_range: 7.0       # antes 3.0
+          raytrace_max_range: 8.0
           raytrace_min_range: 0.0
-          obstacle_max_range: 5.5       # antes 2.5
+          obstacle_max_range: 6.0
           obstacle_min_range: 0.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
@@ -174,7 +175,7 @@ global_costmap:
       publish_frequency: 2.0    # antes: 1.0
       global_frame: map
       robot_base_frame: base_link
-      footprint: "[ [0.45, 0.35], [0.45, -0.35], [-0.45, -0.35], [-0.45, 0.35] ]"
+      footprint: "[ [0.35, 0.25], [0.35, -0.25], [-0.35, -0.25], [-0.35, 0.25] ]"
       resolution: 0.06
       track_unknown_space: true
       always_send_full_costmap: true
@@ -189,19 +190,17 @@ global_costmap:
           clearing: true
           marking: true
           data_type: "LaserScan"
-          raytrace_max_range: 7.0       # antes 5.0
+          raytrace_max_range: 8.0
           raytrace_min_range: 0.0
-          obstacle_max_range: 5.5       # antes 2.5
+          obstacle_max_range: 6.0
           obstacle_min_range: 0.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: true
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 8.0      # antes era 4.0
-        inflation_radius: 0.55         # antes era 0.8
-
-planner_server:
+        cost_scaling_factor: 30.0
+        inflation_radius: 0.40
   ros__parameters:
     enable_stamped_cmd_vel: true
     # expected_planner_frequency: 20.0
@@ -209,7 +208,7 @@ planner_server:
     GridBased:
       plugin: "nav2_navfn_planner::NavfnPlanner"
       tolerance: 0.5
-      use_astar: false
+      use_astar: true
       allow_unknown: true
 
 smoother_server:
