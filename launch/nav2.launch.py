@@ -44,7 +44,8 @@ from launch.actions import (
     DeclareLaunchArgument,
     GroupAction,
     IncludeLaunchDescription,
-    OpaqueFunction
+    OpaqueFunction,
+    SetEnvironmentVariable
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
@@ -105,7 +106,7 @@ def launch_setup(context, *args, **kwargs):
         param_rewrites={
             # the only *.topic parameters are scan.topic, so rewrite all of them to point to
             # our desired scan_topic
-            'topic': eval_scan_topic,
+            # 'scan.topic': eval_scan_topic,
         },
         convert_types=True
     )
@@ -114,6 +115,7 @@ def launch_setup(context, *args, **kwargs):
       [pkg_nav2_bringup, 'launch', 'navigation_launch.py'])
 
     nav2 = GroupAction([
+        SetEnvironmentVariable('RCUTILS_COLORIZED_OUTPUT', '1'),
         PushRosNamespace(namespace),
         SetRemap('/' + namespace + '/odom',
                  '/' + namespace + '/platform/odom'),
@@ -135,4 +137,5 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(OpaqueFunction(function=launch_setup))
+    
     return ld

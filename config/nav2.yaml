@@ -152,17 +152,29 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan
+        observation_sources: scan depth_camera
+        # observation_sources: scan
         scan:
-          topic: sensors/lidar2d_0/scan
+          topic: sensors/lidar3d_0/scan
           max_obstacle_height: 2.0
           clearing: true
           marking: true
-          data_type: "LaserScan"
+          data_type: "PointCloud2"
           raytrace_max_range: 8.0
           raytrace_min_range: 0.0
           obstacle_max_range: 6.0
           obstacle_min_range: 0.0
+        depth_camera:
+          topic: sensors/camera_0/points
+          data_type: "PointCloud2"
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          marking: true
+          clearing: true
+          obstacle_max_range: 8.0
+          obstacle_min_range: 0.0
+          raytrace_max_range: 6.0
+          raytrace_min_range: 0.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: true
@@ -183,24 +195,35 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: true
-        observation_sources: scan
+        observation_sources: scan depth_camera
         scan:
-          topic: sensors/lidar2d_0/scan
+          topic: sensors/lidar3d_0/scan
           max_obstacle_height: 2.0
           clearing: true
           marking: true
-          data_type: "LaserScan"
+          data_type: "PointCloud2"
           raytrace_max_range: 8.0
           raytrace_min_range: 0.0
           obstacle_max_range: 6.0
           obstacle_min_range: 0.0
+        depth_camera:
+          topic: sensors/camera_0/points
+          data_type: "PointCloud2"
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          marking: true
+          clearing: true
+          obstacle_max_range: 8.0
+          obstacle_min_range: 0.0
+          raytrace_max_range: 6.0
+          raytrace_min_range: 0.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: true
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 30.0
-        inflation_radius: 0.40
+        inflation_radius: 0.60
   ros__parameters:
     enable_stamped_cmd_vel: true
     # expected_planner_frequency: 20.0
