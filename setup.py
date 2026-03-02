@@ -20,6 +20,8 @@ setup(
         (os.path.join("share", package_name, "config"), glob("config/*.yaml")),
         # instala configs (rviz)
         (os.path.join("share", package_name, "config"), glob("config/*.rviz")),
+        # instala configs (gazebo)
+        (os.path.join("share", package_name, "config"), glob("config/*.config")),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
