@@ -43,6 +43,31 @@ ARGUMENTS = [
 ]
 
 
+VALID_SPAWN_RECTANGLES = [
+    ((21.1323, -4.8143), (21.0802, -1.6274), (16.6210, 2.3306), (16.9731, -1.7538)),
+    ((15.0922, 0.9340), (14.9418, 7.0970), (10.4262, 7.5483), (10.59, 0.78)),
+    ((2.5077, 6.2065), (-3.3491, 6.0635), (2.8242, -1.4351), (-2.8033, -1.5725)),
+]
+
+
+def _rectangle_bounds(rectangle):
+    xs = [point[0] for point in rectangle]
+    ys = [point[1] for point in rectangle]
+    return min(xs), max(xs), min(ys), max(ys)
+
+
+def _random_point_in_valid_region():
+    weighted_regions = []
+    for rectangle in VALID_SPAWN_RECTANGLES:
+        min_x, max_x, min_y, max_y = _rectangle_bounds(rectangle)
+        area = (max_x - min_x) * (max_y - min_y)
+        weighted_regions.append(((min_x, max_x, min_y, max_y), area))
+
+    region, _ = random.choices(weighted_regions, weights=[region[1] for region in weighted_regions], k=1)[0]
+    min_x, max_x, min_y, max_y = region
+    return random.uniform(min_x, max_x), random.uniform(min_y, max_y)
+
+
 def _spawn_human(context, *args, **kwargs):
     if LaunchConfiguration('spawn_human').perform(context).lower() != 'true':
         return []
@@ -50,13 +75,7 @@ def _spawn_human(context, *args, **kwargs):
     world = LaunchConfiguration('world').perform(context)
     name = LaunchConfiguration('human_name').perform(context)
     z = float(LaunchConfiguration('human_z').perform(context))
-    min_x = float(LaunchConfiguration('human_min_x').perform(context))
-    max_x = float(LaunchConfiguration('human_max_x').perform(context))
-    min_y = float(LaunchConfiguration('human_min_y').perform(context))
-    max_y = float(LaunchConfiguration('human_max_y').perform(context))
-
-    x = random.uniform(min_x, max_x)
-    y = random.uniform(min_y, max_y)
+    x, y = _random_point_in_valid_region()
     yaw = random.uniform(-math.pi, math.pi)
 
     model_sdf = f"""

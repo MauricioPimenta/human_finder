@@ -19,7 +19,9 @@
 #
 
 
+import math
 import os
+import random
 
 from clearpath_config.clearpath_config import ClearpathConfig
 
@@ -70,13 +72,39 @@ ARGUMENTS.append(DeclareLaunchArgument('z', default_value='0.15',
                  description='z component of the robot pose.'))
 
 
+VALID_SPAWN_RECTANGLES = [
+    ((21.1323, -4.8143), (21.0802, -2.33), (17.6210, 2.3306), (16.9731, 0.2538)),
+    ((15.0922, 0.9340), (14.9418, 7.0970), (10.4262, 7.5483), (10.59, 0.78)),
+    ((2.5077, 6.2065), (-3.3491, 6.0635), (2.8242, -1.4351), (-2.8033, -1.5725)),
+]
+
+
+def _rectangle_bounds(rectangle):
+    xs = [point[0] for point in rectangle]
+    ys = [point[1] for point in rectangle]
+    return min(xs), max(xs), min(ys), max(ys)
+
+
+def _random_point_in_valid_region():
+    weighted_regions = []
+    for rectangle in VALID_SPAWN_RECTANGLES:
+        min_x, max_x, min_y, max_y = _rectangle_bounds(rectangle)
+        area = (max_x - min_x) * (max_y - min_y)
+        weighted_regions.append(((min_x, max_x, min_y, max_y), area))
+
+    region, _ = random.choices(weighted_regions, weights=[region[1] for region in weighted_regions], k=1)[0]
+    min_x, max_x, min_y, max_y = region
+    return random.uniform(min_x, max_x), random.uniform(min_y, max_y)
+
+
 def launch_setup(context, *args, **kwargs):
     setup_path = LaunchConfiguration('setup_path')
     world = LaunchConfiguration('world')
     use_sim_time = LaunchConfiguration('use_sim_time')
-    x, y, z = LaunchConfiguration('x'), LaunchConfiguration('y'), LaunchConfiguration('z')
-    yaw = LaunchConfiguration('yaw')
+    z = LaunchConfiguration('z')
     generate = LaunchConfiguration('generate')
+    robot_x, robot_y = _random_point_in_valid_region()
+    robot_yaw = random.uniform(-math.pi, math.pi)
 
     # Parse robot YAML into config
     clearpath_config = ClearpathConfig(os.path.join(
@@ -119,10 +147,10 @@ def launch_setup(context, *args, **kwargs):
             executable='create',
             namespace=namespace,
             arguments=['-name', robot_name,
-                       '-x', x,
-                       '-y', y,
+                       '-x', f'{robot_x:.3f}',
+                       '-y', f'{robot_y:.3f}',
                        '-z', z,
-                       '-Y', yaw,
+                       '-Y', f'{robot_yaw:.3f}',
                        '-topic', 'robot_description'],
             output='screen'
         ),

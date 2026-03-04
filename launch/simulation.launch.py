@@ -42,6 +42,9 @@ ARGUMENTS = [
     DeclareLaunchArgument('use_sim_time', default_value='true',
                           choices=['true', 'false'],
                           description='use_sim_time'),
+    DeclareLaunchArgument('auto_start', default_value='true',
+                          choices=['true', 'false'],
+                          description='Auto-start Gazebo simulation'),
 ]
 
 for pose_element in ['x', 'y', 'yaw']:
@@ -54,19 +57,19 @@ ARGUMENTS.append(DeclareLaunchArgument('z', default_value='0.3',
 
 def generate_launch_description():
     # Directories
-    pkg_clearpath_gz = get_package_share_directory('clearpath_gz')
     pkg_human_finder = get_package_share_directory('human_finder')
 
     # Paths
     gz_sim_launch = PathJoinSubstitution(
         [pkg_human_finder, 'launch', 'gz_sim.launch.py'])
     robot_spawn_launch = PathJoinSubstitution(
-        [pkg_clearpath_gz, 'launch', 'robot_spawn.launch.py'])
+        [pkg_human_finder, 'launch', 'robot_spawn.launch.py'])
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gz_sim_launch]),
         launch_arguments=[
             ('world', LaunchConfiguration('world')),
+            ('auto_start', LaunchConfiguration('auto_start')),
         ]
     )
 

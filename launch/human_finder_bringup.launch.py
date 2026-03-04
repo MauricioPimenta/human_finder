@@ -1,5 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
@@ -47,6 +48,12 @@ def generate_launch_description():
 		),
 
 		DeclareLaunchArgument(
+			'launch_human_detector',
+			default_value='false',
+			description='Launch human_detector package'
+		),
+
+		DeclareLaunchArgument(
 			'human_min_x',
 			default_value='-20.0',
 			description='Minimum x for random human pose'
@@ -76,7 +83,7 @@ def generate_launch_description():
 		IncludeLaunchDescription(
 			PythonLaunchDescriptionSource(
 				os.path.join(
-					get_package_share_directory('clearpath_gz'),
+					get_package_share_directory('human_finder'),
 					'launch',
 					'simulation.launch.py'
 				)
@@ -86,11 +93,7 @@ def generate_launch_description():
 				'world': 'office',
 				'setup_path': clearpath_setup_path,
 				'use_sim_time': use_sim_time,
-				'x': '0.0',
-				'y': '0.0',
-				'yaw': '0.0',
-				'auto_start': 'true',
-				'generate': 'true'
+				'auto_start': 'true'
 			}.items()
 		),
 
@@ -189,27 +192,58 @@ def generate_launch_description():
 			}.items()
 		),
 
-		# #
-		# # Launch human_detector
-		# #
-		# IncludeLaunchDescription(
-		# 	PythonLaunchDescriptionSource(
-		# 		os.path.join(
-		# 			get_package_share_directory('human_detector'),
-		# 			'launch',
-		# 			'human_detector.launch.py'
-		# 		)
-		# 	),
-		# 	launch_arguments={
-		# 		'use_sim_time': use_sim_time,
-		# 		'namespace': namespace
-		# 	}.items()
-		# ),
+		#
+		# Publish static TF alias for the camera frame expected by human_detector
+		#
+		Node(
+			package='tf2_ros',
+			executable='static_transform_publisher',
+			name='camera_optical_frame_alias',
+			namespace=namespace,
+			arguments=[
+				'0', '0', '0',
+				'0', '0', '0',
+				[namespace, '/robot/base_link/camera_0'],
+				'camera_0_color_optical_frame',
+			],
+			remappings=[('/tf', 'tf'), ('/tf_static', 'tf_static')],
+			output='screen',
+		),
 
-		# Node(
-		# 	package='human_finder',
-		# 	executable='human_finder_node',
-		# 	namespace=namespace,
-		# 	parameters=[{'use_sim_time': use_sim_time}]
-		# ),
+		#
+		# Launch human_detector
+		#
+		IncludeLaunchDescription(
+			PythonLaunchDescriptionSource(
+				os.path.join(
+					get_package_share_directory('human_detector'),
+					'launch',
+					'human_detector.launch.py'
+				)
+			),
+			condition=IfCondition(LaunchConfiguration('launch_human_detector')),
+			launch_arguments={
+				'use_sim_time': use_sim_time,
+				'namespace': namespace
+			}.items()
+		),
+
+		#
+		# Launch human_finder
+		#
+		IncludeLaunchDescription(
+			PythonLaunchDescriptionSource(
+				os.path.join(
+					get_package_share_directory('human_finder'),
+					'launch',
+					'human_finder.launch.py'
+				)
+			),
+			launch_arguments={
+				'use_sim_time': use_sim_time,
+				'namespace': namespace
+			}.items()
+		),
+
+		
 	])

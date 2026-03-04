@@ -79,6 +79,11 @@ ros2 launch human_finder human_finder.launch.py namespace:=/a200_0000 use_sim_ti
 
 ---
 
+Para rodar tudo ao mesmo tempo e visualizar apenas as mensagens do human_finder e do explore_lite:
+```bash
+ros2 launch human_finder human_finder_bringup.launch.py 2>&1 | grep -E 'human_finder|explore(_lite|_node)?'
+```
+
 
 
 #### To-do List:
